@@ -11,8 +11,8 @@ class Player sealed
 private:
 	//all these are private so they can't be accessed outside of the object
 	string Name;
-	int Darts_Thrown,Count,Chance,totalCount,Won;
-	bool isTurn = false; bool start = false; bool isWinner = false;
+	int dartsThrown,Count,Chance,totalCount,Won;
+	bool isTurn = false; bool Start = false; bool isWinner = false;
 	
 
 protected:// although not used yet this is more for if inheritance is used down the line
@@ -22,7 +22,7 @@ public:
 	Player(string N,int D,int C)
 	{
 		Name = N;
-		Darts_Thrown = D;
+		dartsThrown = D;
 		Chance = C;
 		Count = 0;
 		totalCount = 0;
@@ -30,28 +30,29 @@ public:
 	}
 
 
-	//access modifiers : Get functions
+	#pragma region Access modifiers: Get functions
+	
 	string getName()
 	{
 		return Name;
 	}
-	int getChance()
+	int getChanceOfBull()
 	{
 		return Chance;
 	}
-	int getCount()
+	int getNumberOfBulls()
 	{
 		return Count;
 	}
-	int getThrown()
+	int getThrown() // used in a if statement to swap the players turns
 	{
-		return Darts_Thrown;
+		return dartsThrown;
 	}
-	int getTotal()
+	int getTotalThrows()
 	{
 		return totalCount;
 	}
-	int getWon()
+	int getNumberOfWins()
 	{
 		return Won;
 	}
@@ -59,9 +60,10 @@ public:
 	{
 		return isTurn;
 	}
+#pragma endregion
 
-
-	//access modifiers : Set Functions
+	#pragma region Access modifiers: Set functions
+	
 	void setCount(bool T)// increments the count based on the value passed and increments the totalCount
 	{
 		if(T)
@@ -72,12 +74,12 @@ public:
 	}
 	void setDarts(int D) // sets how many darts have been thrown
 	{
-		Darts_Thrown = D;
+		dartsThrown = D;
 	}
 	void setStart(bool B) // sets the turn based on the value passed
 	{
 		isTurn = B;
-		start = B;
+		Start = B;
 	}
 	void setTurn(bool T) // sets the turn based on the value passed
 	{
@@ -87,13 +89,13 @@ public:
 	{
 		Won++;
 	}
-
+#pragma endregion
 
 
 	//reset the player without having to create a new instance
 	void Reset(int D,int C)
 	{
-		Darts_Thrown = D;
+		dartsThrown = D;
 		Chance = C;
 		Count = 0;
 		totalCount = 0;
