@@ -1,10 +1,12 @@
 #pragma once
 #include <iostream>
+#include <iomanip>
 #include "Player.h"
 
 using std::cout;
 using std::cin;
 using std::string;
+using std::setprecision;
 
 class Game sealed
 {
@@ -42,8 +44,8 @@ private:
 
 		cout << P2->getName() << " took " << P2->getTotalThrows() << " to get " << P2->getNumberOfBulls() << " Bullseyes\n\n";
 
-		cout << P1->getName() << " has won " << P1->getNumberOfWins() << " out of " << totalGames << " and has won approximatley " << (float)((float)P1->getNumberOfWins() / (float)totalGames) * 100 << "% of the games\n\n";
-		cout << P2->getName() << " has won " << P2->getNumberOfWins() << " out of " << totalGames << " and has won approximatley " << (float)((float)P2->getNumberOfWins() / (float)totalGames) * 100 << "% of the games\n\n";
+		cout << P1->getName() << " has won " << P1->getNumberOfWins() << " out of " << totalGames << " and has won approximatley " << setprecision(3) << (float)((float)P1->getNumberOfWins() / (float)totalGames) * 100 << "% of the games\n\n";
+		cout << P2->getName() << " has won " << P2->getNumberOfWins() << " out of " << totalGames << " and has won approximatley " << setprecision(3) << (float)((float)P2->getNumberOfWins() / (float)totalGames) * 100 << "% of the games\n\n";
 	}
 
 	void Throw(Player* Current) // used for setting the current player darts thrown
