@@ -9,7 +9,7 @@ using std::string;
 class Player sealed
 {
 private:
-	//all these are private so they can't be accessed outside of the object
+	//all these are private so they can't be accessed outside of the class
 	string Name;
 	int dartsThrown,Count,Chance,totalCount,Won;
 	bool isTurn = false; bool Start = false; bool isWinner = false;
