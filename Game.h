@@ -90,155 +90,160 @@ public:
 		while (Running)
 		{
 
-			#pragma region actually playing
-						while (currentRound < Rounds)
+#pragma region actually playing
+			while (currentRound < Rounds)
+			{
+				displayTurn = true;
+				if (P1->getThrown() >= 3) // swaps to the second player
+				{
+					P2->setTurn(true);
+					P1->setDarts(0);
+				}
+				if (P2->getThrown() >= 3)// swaps to the first player
+				{
+					P1->setTurn(true);
+					P2->setDarts(0);
+				}
+				while (displayTurn)
+				{
+					if (P1->getTurn() == true)
+					{
+						for (int i = 0; i < 3; i++)
 						{
-							displayTurn = true;
-							if (P1->getThrown() >= 3) // swaps to the second player
-							{
-								P2->setTurn(true);
-								P1->setDarts(0);
-							}
-							if (P2->getThrown() >= 3)// swaps to the first player
-							{
-								P1->setTurn(true);
-								P2->setDarts(0);
-							}
-							while (displayTurn)
-							{
-								if (P1->getTurn() == true)
-								{
-									for (int i = 0; i < 3; i++)
-									{
-										Throw(P1);
-									}
-									P1->setTurn(false);
-									Turn++;
-
-									cout << "It is " << P1->getName() << "s Turn\n\n";
-
-									cout << "Total Throws: " << P1->getTotalThrows() << "\nBulls Hit: " << P1->getNumberOfBulls() << "\n\n";
-								}
-								else
-								{
-									for (int i = 0; i < 3; i++)
-									{
-										Throw(P2);
-									}
-									P2->setTurn(false);
-									Turn++;
-
-									cout << "It is " << P2->getName() << "s Turn\n\n";
-
-									cout << "Total Throws: " << P2->getTotalThrows() << "\nBulls Hit: " << P2->getNumberOfBulls() << "\n\n";
-								}
-								displayTurn = false;
-							}
-
-							if (Turn >= 2) //round increment
-							{
-								Turn = 0;
-								currentRound++; //increments the current round so it's not stuck in an endless loop
-							}
-
+							Throw(P1);
 						}
-			#pragma endregion
-			#pragma region Display win
+						P1->setTurn(false);
+						Turn++;
 
-						/// <summary>
-						///		
-						///		this will do one of three things depending on the conditions
-						/// 
-						///		the first if statement will check if player one is the winner and will display their name in it
-						/// 
-						///		the second if statement will check if player two is the winner and will display their name in it
-						/// 
-						///		within both of these it will call the function displayStatsMessage() which displays the number of bulls, number of wins and the percentage of wins
-						/// 
-						///		the third statement will display that it was a draw and won't increment the win counter of either player but will still increment the totalGames counter
-						/// 
-						/// </summary>
+						cout << "It is " << P1->getName() << "s Turn\n\n";
 
-
-						if (P1->getNumberOfBulls() > P2->getNumberOfBulls())
+						cout << "Total Throws: " << P1->getTotalThrows() << "\nBulls Hit: " << P1->getNumberOfBulls() << "\n\n";
+					}
+					else
+					{
+						for (int i = 0; i < 3; i++)
 						{
-							if (incrementTotal)
-							{
-								incrementTotal = false;
-								totalGames++;
-								P1->setWon();
-							}
-
-							cout << "The player " << P1->getName() << " has won the game\n\n";
-
-							displayStatsMessage(P1, P2);
-
+							Throw(P2);
 						}
-						else if (P2->getNumberOfBulls() > P1->getNumberOfBulls())
-						{
-							if (incrementTotal)
-							{
-								incrementTotal = false;
-								totalGames++;
-								P2->setWon();
-							}
-							cout << "The player " << P2->getName() << " has won the game\n\n";
+						P2->setTurn(false);
+						Turn++;
 
-							displayStatsMessage(P1, P2);
+						cout << "It is " << P2->getName() << "s Turn\n\n";
 
-						}
-						else
-						{
-							if (incrementTotal)
-							{
-								incrementTotal = false;
-								totalGames++;
-							}
-							cout << "The players scored the exact same which has resulted in a draw. no winner for this round\n\n";
-						}
-			#pragma endregion
-			#pragma region reset/exitgame
-						cout << "press r to reset the game or x to exit the game\n\n";
+						cout << "Total Throws: " << P2->getTotalThrows() << "\nBulls Hit: " << P2->getNumberOfBulls() << "\n\n";
+					}
+					displayTurn = false;
+				}
 
-						cin >> Key;
-						system("CLS");
-						if (Key == 'r')
-						{
-							incrementTotal = true;
-							P1->Reset(0, chanceValue(P1->getName()));// resets the players chance of hitting the bullseye along with other things
-							P2->Reset(0, chanceValue(P2->getName()));
+				if (Turn >= 2) //round increment
+				{
+					Turn = 0;
+					currentRound++; //increments the current round so it's not stuck in an endless loop
+				}
 
-							cout << "How many rounds should they play?\n\n";
-							cin >> Rounds;
+			}
+#pragma endregion
+#pragma region Display win
 
-							cout << "Who should start first?\n\n j = joe        s = sid\n\n";
+			/// <summary>
+			///		
+			///		this will do one of three things depending on the conditions
+			/// 
+			///		the first if statement will check if player one is the winner and will display their name in it
+			/// 
+			///		the second if statement will check if player two is the winner and will display their name in it
+			/// 
+			///		within both of these it will call the function displayStatsMessage() which displays the number of bulls, number of wins and the percentage of wins
+			/// 
+			///		the third statement will display that it was a draw and won't increment the win counter of either player but will still increment the totalGames counter
+			/// 
+			/// </summary>
 
-							cin >> Key;
-							if (Key == 'j') // sets who starts the game and if the relevant key isn't pressed it will randomise it instead
-							{
-								P1->setTurn(true);
-								P2->setTurn(false);
-							}
-							else if (Key == 's')
-							{
-								P1->setTurn(false);
-								P2->setTurn(true);
-							}
-							else
-							{
-								turnOrder(P1, P2, rand() % 100);
-							}
 
-							currentRound = 0; // resets the current round
+			if (P1->getNumberOfBulls() > P2->getNumberOfBulls())
+			{
+				if (incrementTotal)
+				{
+					incrementTotal = false;
+					totalGames++;
+					P1->setWon();
+				}
 
-							Key = NULL; // clears the key pressed
-						}
-						if (Key == 'x')
-						{
-							exit(_CONSOLE); // exits the console
-						}
-			#pragma endregion
+				cout << "The player " << P1->getName() << " has won the game\n\n";
 
+				displayStatsMessage(P1, P2);
+
+			}
+			else if (P2->getNumberOfBulls() > P1->getNumberOfBulls())
+			{
+				if (incrementTotal)
+				{
+					incrementTotal = false;
+					totalGames++;
+					P2->setWon();
+				}
+				cout << "The player " << P2->getName() << " has won the game\n\n";
+
+				displayStatsMessage(P1, P2);
+
+			}
+			else
+			{
+				if (incrementTotal)
+				{
+					incrementTotal = false;
+					totalGames++;
+				}
+				cout << "The players scored the exact same which has resulted in a draw. no winner for this round\n\n";
+			}
+#pragma endregion
+#pragma region reset/exitgame
+			cout << "press r to reset the game or x to exit the game\n\n";
+
+			cin >> Key;
+			system("CLS");
+			if (Key == 'r')
+			{
+				incrementTotal = true;
+				P1->Reset(0, chanceValue(P1->getName()));// resets the players chance of hitting the bullseye along with other things
+				P2->Reset(0, chanceValue(P2->getName()));
+
+				cout << "How many rounds should they play?\n\n";
+				cin >> Rounds;
+
+				startFirst(P1, P2);
+
+				currentRound = 0; // resets the current round
+
+				Key = NULL; // clears the key pressed
+			}
+			if (Key == 'x')
+			{
+				exit(_CONSOLE); // exits the console
+			}
+#pragma endregion
+
+		}
+	}
+
+	void startFirst(Player* P1, Player* P2)
+	{
+		cout << "Who should start first?\n\n j = joe        s = sid\n\n";
+
+		cin >> Key;
+		if (Key == 'j') // sets who starts the game and if the relevant key isn't pressed it will randomise it instead
+		{
+			P1->setTurn(true);
+			P2->setTurn(false);
+		}
+		else if (Key == 's')
+		{
+			P1->setTurn(false);
+			P2->setTurn(true);
+		}
+		else
+		{
+			turnOrder(P1, P2, rand() % 100);
 		}
 	}
 
@@ -275,5 +280,33 @@ public:
 			P2->setStart(true);
 			cout << "The Player " << P2->getName() << " Shall Start\n\n";
 		}
+	}
+
+	void simulateMultipleGames(Player* P1, Player* P2)
+	{
+		int numberOfGames = 0;
+		int currentGame = 0;
+
+		cout << "How many games shall be simulated?";
+
+		cin >> numberOfGames;
+
+		P1->completeReset(0, chanceValue(P1->getName()));// resets the players chance of hitting the bullseye along with the number of wins
+		P2->completeReset(0, chanceValue(P2->getName()));
+		
+		startFirst(P1, P2);
+
+		while(currentGame < numberOfGames)
+		{
+			if(P1->getTurn() == true)
+			{
+			
+			}
+			else
+			{
+				
+			}
+		}
+
 	}
 };

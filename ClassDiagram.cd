@@ -1,16 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
   <Class Name="Player">
-    <Position X="7.75" Y="0.5" Width="2.25" />
+    <Position X="7.75" Y="0.5" Width="2.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAABgEKBABAAAAAQAAAUQAAARAgQAAAAkQQJCAAA=</HashCode>
+      <HashCode>AAAAAABgEKBABAAAAAQAAAUQAAARAgQgAAAkQQJCAAA=</HashCode>
       <FileName>Player.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Game">
-    <Position X="3" Y="0.5" Width="3.5" />
+    <Position X="4" Y="0.5" Width="3.5" />
     <TypeIdentifier>
-      <HashCode>gAAAAAAAAAAgAASAAAACQBAIACgIAAAIAQAAAEIAAAA=</HashCode>
+      <HashCode>gAQAAAAQAAAgAASAAAACQBAIACgIAAAIAQAAAEIAAAA=</HashCode>
       <FileName>Game.h</FileName>
     </TypeIdentifier>
   </Class>
