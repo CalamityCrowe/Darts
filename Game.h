@@ -19,6 +19,7 @@ private:
 	bool Running;
 	bool displayTurn;
 	bool incrementTotal;
+	bool SimGames;
 	int Rounds, currentRound, Turn;
 	int totalGames;
 
@@ -69,6 +70,7 @@ public:
 		Running = true;
 		displayTurn = true;
 		incrementTotal = true;
+		SimGames = false;
 		Key = '_';
 
 		Rounds = V;
@@ -159,52 +161,56 @@ public:
 			/// 
 			/// </summary>
 
-
-			if (P1->getNumberOfBulls() > P2->getNumberOfBulls())
+			if (SimGames == false)
 			{
-				if (incrementTotal)
+				if (P1->getNumberOfBulls() > P2->getNumberOfBulls())
 				{
-					incrementTotal = false;
-					totalGames++;
-					P1->setWon();
+					if (incrementTotal)
+					{
+						incrementTotal = false;
+						totalGames++;
+						P1->setWon();
+					}
+
+					cout << "The player " << P1->getName() << " has won the game\n\n";
+
+					displayStatsMessage(P1, P2);
+
 				}
-
-				cout << "The player " << P1->getName() << " has won the game\n\n";
-
-				displayStatsMessage(P1, P2);
-
-			}
-			else if (P2->getNumberOfBulls() > P1->getNumberOfBulls())
-			{
-				if (incrementTotal)
+				else if (P2->getNumberOfBulls() > P1->getNumberOfBulls())
 				{
-					incrementTotal = false;
-					totalGames++;
-					P2->setWon();
+					if (incrementTotal)
+					{
+						incrementTotal = false;
+						totalGames++;
+						P2->setWon();
+					}
+					cout << "The player " << P2->getName() << " has won the game\n\n";
+
+					displayStatsMessage(P1, P2);
+
 				}
-				cout << "The player " << P2->getName() << " has won the game\n\n";
-
-				displayStatsMessage(P1, P2);
-
-			}
-			else
-			{
-				if (incrementTotal)
+				else
 				{
-					incrementTotal = false;
-					totalGames++;
+					if (incrementTotal)
+					{
+						incrementTotal = false;
+						totalGames++;
+					}
+					cout << "The players scored the exact same which has resulted in a draw. no winner for this round\n\n";
 				}
-				cout << "The players scored the exact same which has resulted in a draw. no winner for this round\n\n";
 			}
+
 #pragma endregion
 #pragma region reset/exitgame
-			cout << "press r to reset the game or x to exit the game\n\n";
+			cout << "press r to reset the game\nx to exit the game\ns to simulate multiple games\n\n";
 
 			cin >> Key;
 			system("CLS");
 			if (Key == 'r')
 			{
 				incrementTotal = true;
+				SimGames = false;
 				P1->Reset(0, chanceValue(P1->getName()));// resets the players chance of hitting the bullseye along with other things
 				P2->Reset(0, chanceValue(P2->getName()));
 
@@ -216,6 +222,12 @@ public:
 				currentRound = 0; // resets the current round
 
 				Key = NULL; // clears the key pressed
+			}
+			if (Key == 's')
+			{
+				SimGames = true;
+				simulateMultipleGames(P1, P2);
+				Key = NULL;
 			}
 			if (Key == 'x')
 			{
@@ -287,26 +299,66 @@ public:
 		int numberOfGames = 0;
 		int currentGame = 0;
 
-		cout << "How many games shall be simulated?";
+		cout << "How many games shall be simulated?\n\n";
 
 		cin >> numberOfGames;
 
 		P1->completeReset(0, chanceValue(P1->getName()));// resets the players chance of hitting the bullseye along with the number of wins
 		P2->completeReset(0, chanceValue(P2->getName()));
-		
+
 		startFirst(P1, P2);
 
-		while(currentGame < numberOfGames)
+		while (currentGame < numberOfGames)
 		{
-			if(P1->getTurn() == true)
+			if (P1->getTurn() == true)
 			{
-			
+				for (int i = 0; i < 3; i++)
+				{
+					Throw(P1);
+				}
+				P1->setTurn(false);
+				P2->setTurn(true);
+
 			}
 			else
 			{
-				
+				for (int i = 0; i < 3; i++)
+				{
+					Throw(P2);
+				}
+				P1->setTurn(true);
+				P2->setTurn(false);
+			}
+			if (P1->getNumberOfBulls() >= 10 || P2->getNumberOfBulls() >= 10)
+			{
+				if (P1->getNumberOfBulls() > P2->getNumberOfBulls())
+				{
+					P1->setWon();
+				}
+				else if (P2->getNumberOfBulls() > P1->getNumberOfBulls())
+				{
+					P2->setWon();
+
+				}
+				P1->Reset(0, P1->getChanceOfBull());
+				P1->Reset(0, P2->getChanceOfBull());
+				currentGame++;
 			}
 		}
+		cout << "\nTotal number of games played was" << numberOfGames << "\n\n";
 
+		cout << P1->getName() << " has won " << P1->getNumberOfWins() << " out of " << numberOfGames << ". The success rate was " << setprecision(3) << (float)((float)P1->getNumberOfWins() / numberOfGames) * 100 << "%\n\n";
+
+		cout << P2->getName() << " has won " << P2->getNumberOfWins() << " out of " << numberOfGames << ". The success rate was " << setprecision(3) << (float)((float)P2->getNumberOfWins() / numberOfGames) * 100 << "%\n\n";
+
+		// does the diffrence for the draw
+		if (P1->getNumberOfWins() > P2->getNumberOfWins())
+		{
+			cout << "the number of draws was " << (numberOfGames - (P1->getNumberOfWins() + P2->getNumberOfWins())) << " out of " << numberOfGames << ". The percentage of draws is " << setprecision(3) << (float)(numberOfGames - (float)(P1->getNumberOfWins() + P2->getNumberOfWins())) / numberOfGames * 100 << "%\n";
+		}
+		else if (P2->getNumberOfWins() > P1->getNumberOfWins())
+		{
+			cout << "the number of draws was " << (numberOfGames - (P2->getNumberOfWins() + P1->getNumberOfWins())) << " out of " << numberOfGames << ". The percentage of draws is " << setprecision(3) << (float)(numberOfGames - (float)(P2->getNumberOfWins() + P1->getNumberOfWins())) / numberOfGames * 100 << "%\n";
+		}
 	}
 };

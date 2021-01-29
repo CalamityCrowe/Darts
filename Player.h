@@ -97,7 +97,6 @@ public:
 	{
 		dartsThrown = D;
 		Chance = C;
-		Count = D;
 		totalCount = D;
 	}
 	void completeReset(int D,int C)
